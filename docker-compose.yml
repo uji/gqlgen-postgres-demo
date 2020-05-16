@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  db:
+    image: postgres:9-alpine
+    environment:
+      POSTGRES_USER: postgres
+    ports:
+      - "5555:5432"
+    tty: true
+  app:
+    build: .
+    volumes:
+      - .:/go/src/repo
+    tty: true
