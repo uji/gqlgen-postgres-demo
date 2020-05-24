@@ -11,7 +11,17 @@ import (
 
 func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
 	return []*model.User{
-		{ID: "dfafdas", Name: "test"},
+		{
+			ID:   "user-id",
+			Name: "user1",
+			Todes: []*model.Todo{
+				{
+					ID:   "todo1",
+					Done: false,
+					Text: "todo1",
+				},
+			},
+		},
 	}, nil
 }
 

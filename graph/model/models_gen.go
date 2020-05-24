@@ -2,7 +2,15 @@
 
 package model
 
-type User struct {
+type Todo struct {
 	ID   string `json:"id"`
-	Name string `json:"name"`
+	Text string `json:"text"`
+	Done bool   `json:"done"`
+	User *User  `json:"user"`
+}
+
+type User struct {
+	ID    string  `json:"id"`
+	Name  string  `json:"name"`
+	Todes []*Todo `json:"todes"`
 }
