@@ -1,20 +1,26 @@
 package postgres
 
-import "database/sql"
+import (
+	"database/sql"
+	"gqlgen-postgres-demo/usecase"
+)
 
-type UserColumns struct {
-	ID   int
-	Name string
+type UserGetter struct {
+	db *sql.DB
 }
 
-func QueryUsers(db *sql.DB) ([]UserColumns, error) {
-	var us []UserColumns
-	rows, err := db.Query("SELECT * FROM users u")
+func NewUserGetter(db *sql.DB) *UserGetter {
+	return &UserGetter{db}
+}
+
+func (u *UserGetter) GetUsers() ([]usecase.UserColumns, error) {
+	var us []usecase.UserColumns
+	rows, err := u.db.Query("SELECT * FROM users u")
 	if err != nil {
 		return us, err
 	}
 	for rows.Next() {
-		var u UserColumns
+		var u usecase.UserColumns
 		if err := rows.Scan(&u.ID, &u.Name); err != nil {
 			return us, err
 		}

@@ -5,12 +5,14 @@ import (
 	"testing"
 )
 
-func TestQueryUsers(t *testing.T) {
+func TestGetUsers(t *testing.T) {
 	db, err := postgres.NewDB()
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, err = postgres.QueryUsers(db)
+
+	g := postgres.NewUserGetter(db)
+	_, err = g.GetUsers()
 	if err != nil {
 		t.Fatal(err)
 	}
