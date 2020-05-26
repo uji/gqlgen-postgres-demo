@@ -7,22 +7,22 @@ import (
 	"context"
 	"gqlgen-postgres-demo/graph/generated"
 	"gqlgen-postgres-demo/graph/model"
+	"strconv"
 )
 
 func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
-	return []*model.User{
-		{
-			ID:   "user-id",
-			Name: "user1",
-			Todes: []*model.Todo{
-				{
-					ID:   "todo1",
-					Done: false,
-					Text: "todo1",
-				},
-			},
-		},
-	}, nil
+	us, err := r.Resolver.usecase.GetUsers()
+	if err != nil {
+		return nil, err
+	}
+	var res []*model.User
+	for _, u := range us {
+		res = append(res, &model.User{
+			ID:   strconv.Itoa(u.ID),
+			Name: u.Name,
+		})
+	}
+	return res, nil
 }
 
 // Query returns generated.QueryResolver implementation.
