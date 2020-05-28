@@ -1,15 +1,29 @@
 version: "3"
-
 services:
   db:
     image: postgres:9-alpine
     environment:
       POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
     ports:
       - "5555:5432"
     tty: true
   app:
     build: .
+    depends_on:
+      - db
     volumes:
       - .:/go/src/repo
     tty: true
+    environment:
+      DB_HOST: db
+      DB_NAME: postgres
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: password
+    ports:
+      - "8081:8080"
+networks:
+  default:
+    external:
+      name: gql-demo-network

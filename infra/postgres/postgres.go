@@ -9,7 +9,8 @@ import (
 
 func NewDB() (*sql.DB, error) {
 	opt := fmt.Sprintf(
-		"dbname=%s port=%s user=%s password=%s sslmode=disable",
+		"host=%s dbname=%s port=%s user=%s password=%s sslmode=disable",
+		config.DBHost,
 		config.DBName,
 		config.DBPort,
 		config.DBUser,

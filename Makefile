@@ -1,3 +1,6 @@
+init:
+	docker network create gql-demo-network
+
 up:
 	docker-compose up -d
 
@@ -9,3 +12,9 @@ serve:
 
 sh:
 	docker-compose exec app sh
+
+psql:
+	docker-compose exec db psql -d postgres -U postgres
+
+migrate:
+	sql-migrate up
