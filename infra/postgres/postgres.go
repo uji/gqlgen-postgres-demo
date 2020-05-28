@@ -3,10 +3,17 @@ package postgres
 import (
 	// test
 	"database/sql"
-
-	_ "github.com/lib/pq"
+	"fmt"
+	"gqlgen-postgres-demo/config"
 )
 
 func NewDB() (*sql.DB, error) {
-	return sql.Open("postgres", "dbname=postgres port=5555 user=postgres password=password sslmode=disable")
+	opt := fmt.Sprintf(
+		"dbname=%s port=%s user=%s password=%s sslmode=disable",
+		config.DBName,
+		config.DBPort,
+		config.DBUser,
+		config.DBPassword,
+	)
+	return sql.Open("postgres", opt)
 }
