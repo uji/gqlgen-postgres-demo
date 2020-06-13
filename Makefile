@@ -1,5 +1,6 @@
 init:
 	docker network create gql-demo-network
+	docker volume create gql-demo-data
 
 up:
 	docker-compose up -d

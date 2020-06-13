@@ -8,6 +8,8 @@ services:
     ports:
       - "5555:5432"
     tty: true
+    volumes:
+      - "gql-demo-data:/var/lib/postgresql/data"
   app:
     build: .
     depends_on:
@@ -22,7 +24,10 @@ services:
       DB_USER: postgres
       DB_PASSWORD: password
     ports:
-      - "8081:8080"
+      - "8080:8080"
+volumes:
+  gql-demo-data:
+    external: true
 networks:
   default:
     external:
