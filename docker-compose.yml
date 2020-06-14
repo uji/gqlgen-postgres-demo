@@ -2,6 +2,11 @@ version: "3"
 services:
   db:
     image: postgres:9-alpine
+    command: postgres -c log_destination=stderr -c log_statement=all -c log_connections=on -c log_disconnections=on
+    logging:
+      options:
+        max-size: "10k"
+        max-file: "5"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password

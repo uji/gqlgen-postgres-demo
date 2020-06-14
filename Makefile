@@ -17,5 +17,12 @@ sh:
 psql:
 	docker-compose exec db psql -d postgres -U postgres
 
+gen:
+	go run github.com/99designs/gqlgen generate
+	# go get github.com/vektah/dataloaden
+
 migrate:
 	sql-migrate up
+
+dblog:
+	docker-compose logs -f db
