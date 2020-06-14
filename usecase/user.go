@@ -1,8 +1,9 @@
 package usecase
 
 type UserColumns struct {
-	ID   int
-	Name string
+	ID    int
+	Name  string
+	Todos []TodoColumns
 }
 
 type UserGetter interface {
@@ -10,13 +11,25 @@ type UserGetter interface {
 }
 
 type User struct {
-	getter UserGetter
+	userGetter UserGetter
+	todoGetter TodoGetter
 }
 
-func NewUser(getter UserGetter) *User {
-	return &User{getter}
+func NewUser(userGetter UserGetter, todoGetter TodoGetter) *User {
+	return &User{userGetter, todoGetter}
 }
 
 func (u *User) GetUsers() ([]UserColumns, error) {
-	return u.getter.GetUsers()
+	us, err := u.userGetter.GetUsers()
+	if err != nil {
+		return nil, err
+	}
+	for i, user := range us {
+		ts, err := u.todoGetter.GetTodosByUserID(user.ID)
+		if err != nil {
+			return nil, err
+		}
+		us[i].Todos = ts
+	}
+	return us, err
 }

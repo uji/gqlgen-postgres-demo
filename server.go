@@ -22,9 +22,18 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	getter := postgres.NewUserGetter(db)
-	usecase := usecase.NewUser(getter)
-	resolver := graph.NewResolver(usecase)
+	userGetter := postgres.NewUserGetter(db)
+	todoGetter := postgres.NewTodoGetter(db)
+	userUsecase := usecase.NewUser(userGetter, todoGetter)
+	todoUsecase := usecase.NewTodo(todoGetter)
+	u := struct {
+		usecase.UserGetter
+		usecase.TodoGetter
+	}{
+		userUsecase,
+		todoUsecase,
+	}
+	resolver := graph.NewResolver(u)
 
 	port := os.Getenv("PORT")
 	if port == "" {

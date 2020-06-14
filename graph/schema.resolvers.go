@@ -5,6 +5,7 @@ package graph
 
 import (
 	"context"
+	"fmt"
 	"gqlgen-postgres-demo/graph/generated"
 	"gqlgen-postgres-demo/graph/model"
 	"strconv"
@@ -15,14 +16,28 @@ func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	var res []*model.User
 	for _, u := range us {
+		ts := make([]*model.Todo, len(u.Todos))
+		for i, t := range u.Todos {
+			ts[i] = &model.Todo{
+				ID:   strconv.Itoa(t.ID),
+				Done: t.Done,
+				Text: t.Text,
+			}
+		}
 		res = append(res, &model.User{
-			ID:   strconv.Itoa(u.ID),
-			Name: u.Name,
+			ID:    strconv.Itoa(u.ID),
+			Name:  u.Name,
+			Todes: ts,
 		})
 	}
 	return res, nil
+}
+
+func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
+	panic(fmt.Errorf("not implemented"))
 }
 
 // Query returns generated.QueryResolver implementation.

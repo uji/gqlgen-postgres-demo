@@ -8,6 +8,7 @@ import "gqlgen-postgres-demo/usecase"
 
 type Usecase interface {
 	GetUsers() ([]usecase.UserColumns, error)
+	GetTodosByUserID(userID int) ([]usecase.TodoColumns, error)
 }
 
 type Resolver struct {
